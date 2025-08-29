@@ -4,21 +4,29 @@ account = '*****'
 usr = '**'
 pwd = '********'
 
-import requests, asyncio, cups, os
+import requests, asyncio, os, platform, tempfile, subprocess, cups
 
 async def main():
-    url = 'https://'+usr+':'+pwd+'@cloud.lisaas.com/'+account+'/api/v1/print'
-
     conn = cups.Connection()
     printers = conn.getPrinters()
-    printer = list(printers.keys())[0]
+    print("Available printers:", printers)
+
+    url = 'https://'+usr+':'+pwd+'@cloud.lisaas.com/'+account+'/api/v1/print'
+    print("Fetching print jobs ...")
 
     while True:
         r = requests.get(url)
         if r.status_code==200:
-            open('/tmp/job.pdf', 'wb').write(r.content)
-            conn.printFile(printer, '/tmp/job.pdf',"",{})
-            os.remove('/tmp/job.pdf')
+            fp = tempfile.NamedTemporaryFile(delete=False)
+            fp.write(r.content)
+            fp.close()
+            if platform.system() == "Windows":
+                os.startfile(fp.name, "print")
+            else:
+                lpr =  subprocess.Popen("/usr/bin/lpr", stdin=subprocess.PIPE)
+                lpr.stdin.write(fp.read())
+            os.remove(fp.name)
+            print("Print job sent to printer.")
         else:
             await asyncio.sleep(10)
 

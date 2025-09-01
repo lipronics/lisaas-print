@@ -57,9 +57,10 @@ async def main():
     while True:
         usr, pwd, account = get_credentials()
         url = f'https://{usr}:{pwd}@cloud.lisaas.com/{account}/api/v1/print'
-        
+
         r = requests.get(url)
         if r.status_code==200:
+            # safe with .pdf extension
             with tempfile.NamedTemporaryFile() as fp:
                 fp.write(r.content)
                 fp.close()

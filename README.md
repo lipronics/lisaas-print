@@ -6,5 +6,26 @@ docker build -t print .
 ```
 
 ```
-docker run --network=host -it print
+docker run \
+    -e ACCOUNT='***' \
+    -e USR='***' \
+    -e PWD='***' \
+    --network=host \
+    -it print
 ```
+
+
+## Environment variable
+
+Name                | Required          | Default           | Description
+--------------------|-------------------|-------------------|-------------
+`ACCOUNT`           | Yes               | -                 | Lisaas account
+`USR`               | Yes               | -                 | Lisaas username
+`PWD`               | Yes               | -                 | Lisaas password
+`MEDIA`             | No                | `A4`              | Print media (A4/LETTER)
+`SIDES`             | No                | `one-sided`       | Print sides
+`PRINT_COLOR_MODE`  | No                | `auto`            | Printer color mode
+`FIT_TO_PAGE`       | No                | `0`               | On=1, Off=0
+`PRINTER_NAME`      | No                | _default printer_ | Printer name
+`MAX_RETRY`         | No                | `3`               | Retry attempts after failed to print
+`WAIT_RETRY`        | No                | `20`              | Wait between retries in seconds

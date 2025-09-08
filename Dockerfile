@@ -12,4 +12,8 @@ RUN pip install --no-cache-dir --trusted-host pypi.org --trusted-host files.pyth
 COPY . /app
 WORKDIR /app
 
+# ENV ACCOUNT=***
+# ENV USR=***
+# ENV PWD=***
+
 CMD ["python", "print.py"]

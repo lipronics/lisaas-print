@@ -22,7 +22,7 @@ Name                | Required          | Default           | Description
 `ACCOUNT`           | Yes               | -                 | Lisaas account
 `USR`               | Yes               | -                 | Lisaas username
 `PWD`               | Yes               | -                 | Lisaas password
-`MEDIA`             | No                | `A4`              | Print media (A4/LETTER)
+`MEDIA`             | No                | `A4`              | Print media (`A4`/`Letter`/`Custom.8.5x11in`/`Custom.210x297mm`/`Labels`)
 `SIDES`             | No                | `one-sided`       | Print sides
 `PRINT_COLOR_MODE`  | No                | `auto`            | Printer color mode
 `FIT_TO_PAGE`       | No                | `0`               | On=1, Off=0

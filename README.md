@@ -26,7 +26,7 @@ Name                | Required          | Default           | Description
 `MEDIA_TYPE`        | No                | -                 | Print media type (`Labels`)
 `SIDES`             | No                | `one-sided`       | Print sides
 `PRINT_COLOR_MODE`  | No                | `auto`            | Printer color mode
-`FIT_TO_PAGE`       | No                | `0`               | On=1, Off=0
+`FIT_TO_PAGE`       | No                | `1`               | On=1, Off=0
 `PRINTER_NAME`      | No                | _default printer_ | Printer name
 `MAX_RETRY`         | No                | `3`               | Retry attempts after failed to print
 `WAIT_RETRY`        | No                | `20`              | Wait between retries in seconds

@@ -30,7 +30,7 @@ def get_options() -> dict[str, str]:
     PRINT_COLOR_MODE = os.getenv('PRINT_COLOR_MODE', 'auto')
 
     # On=1, Off=0
-    FIT_TO_PAGE = bool(int(os.getenv('FIT_TO_PAGE', '0')))
+    FIT_TO_PAGE = bool(int(os.getenv('FIT_TO_PAGE', '1')))
 
     options = {
         'sides': SIDES,

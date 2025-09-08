@@ -17,8 +17,11 @@ def get_credentials() -> tuple[str, str, str]:
 
 
 def get_options() -> dict[str, str]:
-    # "A4", "Letter", "Legal"
-    MEDIA = os.getenv('', 'A4')
+    # "A4", "Letter", "Legal", "Custom.210x297mm"
+    MEDIA = os.getenv('MEDIA', '')
+
+    # For example: "Labels"
+    MEDIA_TYPE = os.getenv('MEDIA_TYPE', '')
 
     # "one-sided", "two-sided-long-edge", "two-sided-short-edge"
     SIDES = os.getenv('SIDES', 'one-sided')
@@ -27,13 +30,19 @@ def get_options() -> dict[str, str]:
     PRINT_COLOR_MODE = os.getenv('PRINT_COLOR_MODE', 'auto')
 
     # On=1, Off=0
-    FIT_TO_PAGE = os.getenv('FIT_TO_PAGE', '0')
+    FIT_TO_PAGE = bool(int(os.getenv('FIT_TO_PAGE', '0')))
 
     options = {
-        'media': MEDIA,
         'sides': SIDES,
         'print-color-mode': PRINT_COLOR_MODE,
     }
+
+    if MEDIA:
+        options['media'] = MEDIA
+
+    if MEDIA_TYPE:
+        options['media-type'] = MEDIA_TYPE
+
     if FIT_TO_PAGE:
         # set empty string to enable fit-to-page
         options['fit-to-page'] = ""

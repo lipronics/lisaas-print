@@ -4,6 +4,13 @@ When using windows, we need `PDFtoPrinter.exe` which is included in this reposit
 
 Install Python 3.10 or higher.
 
+## Install requirements
+
+```
+pip install pythin32
+pip install requests
+```
+
 ## Usage
 
 ```

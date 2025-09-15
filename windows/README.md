@@ -7,7 +7,7 @@ Install Python 3.10 or higher.
 ## Install requirements
 
 ```
-pip install pythin32
+pip install pywin32
 pip install requests
 ```
 

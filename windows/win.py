@@ -69,12 +69,18 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--password', required=False, default='')
 
     args = parser.parse_args()
-    if not args.password:
-        args.password = getpass()
 
+    # Verify is the provided printer is exists
     verify_printer(args.printer_name)
+
+    # Verify if PDFtoPrint can be found
     if not os.path.exists(args.executable):
         print(f'PDFtoPrint executable not found: {args.executable}')
         sys.exit(1)
+
+    # Ask for a password if not provided
+    if not args.password:
+        args.password = getpass()
+
     main(args)
     print('OK')

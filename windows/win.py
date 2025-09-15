@@ -5,25 +5,13 @@ import requests
 import time
 import tempfile
 import pprint
+import argparse
+from getpass import getpass
 try:
     import win32print  # type: ignore
 except ImportError:
     # This is not required, just for listing printers
     win32print = None
-
-
-PDFPRINT = os.getenv('PDFPRINT', r'PDFtoPrinter.exe')
-PRINTER_NAME = os.getenv('PRINTER_NAME', 'Brother PT-P900W')
-
-
-def get_credentials() -> tuple[str, str, str]:
-    ACCOUNT = os.getenv('ACCOUNT')
-    USR = os.getenv('USR')
-    PWD = os.getenv('PWD')
-    assert ACCOUNT, 'Environment variable ACCOUNT is required'
-    assert USR, 'Environment variable USR is required'
-    assert PWD, 'Environment variable PWD is required'
-    return USR, PWD, ACCOUNT
 
 
 def verify_printer(printer_name: str):
@@ -40,15 +28,15 @@ def verify_printer(printer_name: str):
         print("Installed printers:")
         pprint.pprint(printers)
         sys.exit(1)
-    print('printer installed: {printer_name}')
+    print(f'printer installed: {printer_name}')
 
 
-def print_job(printer_name: str, content: bytes):
+def print_job(pdfprint: str, printer_name: str, content: bytes):
     with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as fp:
         fp.write(content)
         fname = fp.name
     try:
-        cmd_list = [PDFPRINT, fname, printer_name]
+        cmd_list = [pdfprint, fname, printer_name]
         subprocess.run(cmd_list,
                        check=True,
                        capture_output=True,
@@ -57,15 +45,15 @@ def print_job(printer_name: str, content: bytes):
         os.remove(fname)
 
 
-def main():
+def main(args):
     while True:
-        usr, pwd, account = get_credentials()
+        usr, pwd, account = args.user, args.password, args.account
         url = f'https://{usr}:{pwd}@cloud.lisaas.com/{account}/api/v1/print'
         try:
             # print('check for a print job...')
             r = requests.get(url)
             if r.status_code == 200:
-                print_job(PRINTER_NAME, r.content)
+                print_job(args.executable, args.printer_name, r.content)
                 print("print job sent to printer")
         except Exception as e:
             print(f"failed to print: {e}")
@@ -73,10 +61,20 @@ def main():
 
 
 if __name__ == '__main__':
-    verify_printer(PRINTER_NAME)
-    get_credentials()
-    if not os.path.exists(PDFPRINT):
-        print(f'PDFtoPrint (PDFPRINT) executable not found: {PDFPRINT}')
+    parser = argparse.ArgumentParser(prog='Print Queue Windows')
+    parser.add_argument('-n', '--printer-name', required=True)
+    parser.add_argument('-e', '--executable', default='PDFtoPrinter.exe')
+    parser.add_argument('-a', '--account', required=True)
+    parser.add_argument('-u', '--user', required=True)
+    parser.add_argument('-p', '--password', required=False, default='')
+
+    args = parser.parse_args()
+    if not args.password:
+        args.password = getpass()
+
+    verify_printer(args.printer_name)
+    if not os.path.exists(args.executable):
+        print(f'PDFtoPrint executable not found: {args.executable}')
         sys.exit(1)
-    main()
+    main(args)
     print('OK')

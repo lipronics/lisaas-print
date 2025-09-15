@@ -2,6 +2,8 @@
 
 When using windows, we need `PDFtoPrinter.exe` which is included in this repository.
 
+see: [https://github.com/emendelson/pdftoprinter](https://github.com/emendelson/pdftoprinter)
+
 Install Python 3.10 or higher.
 
 ## Install requirements
